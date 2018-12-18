@@ -1,0 +1,14 @@
+---
+title: "hw1"
+output: html_document
+---
+### 1.1
+```{r}
+f <- function(x) dlnorm(x, mean = 3, sd = 0.5)
+integrate(f, 25, 50)
+```
+### 1.2
+```{r}
+f1 <- function(q) qlnorm(q, mean = 3, sd = 0.5)
+integrate(f1, 0.1, 0.9)
+```
