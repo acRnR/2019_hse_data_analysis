@@ -1,0 +1,25 @@
+---
+title: "hw2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+fi <- read.csv('hw2_phoible.csv', header = TRUE)
+```
+
+
+###2.1
+```{r}
+percent <- fi$consonants/fi$phonemes
+fi$per <- cbind(percent)
+fi[1][fi$per == max(percent)]
+```
+
+
+
+
+###2.2
+```
+```
