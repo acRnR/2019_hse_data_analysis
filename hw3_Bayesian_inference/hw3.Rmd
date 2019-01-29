@@ -1,0 +1,53 @@
+---
+title: "hw3"
+output: html_notebook
+---
+---
+### 3.1
+```{r}
+data1 <- read.csv('https://raw.githubusercontent.com/agricolamz/2019_data_analysis_for_linguists/master/data/students/acRnR/hw3_Bayesian_inference/hw3_phoible.csv')
+
+prod(dnorm(data1$consonants, 22, 6))
+```
+### 3.2
+```{r}
+data2 <- read.csv('https://raw.githubusercontent.com/agricolamz/2019_data_analysis_for_linguists/master/data/letter_frequency.csv')
+
+langs <- c('French', 'German', 'Spanish', 'Portuguese', 'Esperanto', 'Italian', 'Turkish', 'Swedish', 'Polish', 'Dutch', 'Danish', 'Icelandic', 'Finnish')
+
+mdf <- data_frame(model = langs,
+           prior = 1/13,
+           likelihood = as.numeric(filter(data2, letter == 'm')[1,])[-14],
+           product = prior * likelihood,
+           posterior = product/sum(product))
+ 
+odf <- data_frame(model = langs,
+           prior2 = mdf$posterior,
+           likelihood2 = as.numeric(filter(data2, letter == 'o')[1,])[-14],
+           product2 = prior2 * likelihood2,
+           posterior2 = product2/sum(product2)) 
+
+sdf <- data_frame(model = langs,
+                  prior3 = odf$posterior2,
+                  likelihood3 = as.numeric(filter(data2, letter == 's')[1,])[-14],
+                  product3 = prior3 * likelihood3,
+                  posterior3 = product3/sum(product3)) 
+
+tdf <- data_frame(model = langs,
+                  prior4 = sdf$posterior3,
+                  likelihood4 = as.numeric(filter(data2, letter == 't')[1,])[-14],
+                  product4 = prior4 * likelihood4,
+                  posterior4 = product4/sum(product4)) 
+
+max(tdf$posterior4)
+```
+### 3.3
+```{r}
+data3 <- read.csv('https://raw.githubusercontent.com/agricolamz/2019_data_analysis_for_linguists/master/data/students/acRnR/hw3_Bayesian_inference/hw3_task_3.csv')
+
+alpha33 <- 33 + data3$a
+beta33 <- 77 + data3$b
+
+alpha33/(alpha33+beta33)
+
+```
