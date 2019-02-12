@@ -8,24 +8,17 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
+### 4.1
 ```{r}
 library(tidyverse)
 library(shiny)
 library(tibble)
 
-
 df <- read.csv('https://raw.githubusercontent.com/agricolamz/2019_data_analysis_for_linguists/master/data/students/acRnR/hw4_Advanced_Bayesian/hw4_caretta.csv')
-
-```
-
-```{r}
 pr_mean <- mean(x=df$vowel.dur, trim=0.1)
 pr_sd <- sd(df$vowel.dur)
 result <- data_frame('speaker'=NA, 'pst_mean'=NA, 'pst_sd'=NA, 'left'=NA, 'right'=NA)
 speakers <- list('brs02', 'bte03', 'jj04', 'shg05', 'tt01')
-```
-
-```{r}
 for(i in speakers){
   data_mean <- mean(filter(df, speaker == i)$vowel.dur)
   data_sd <- sd(filter(df, speaker == i)$vowel.dur)
@@ -36,11 +29,9 @@ for(i in speakers){
   result = add_row(result, speaker=i, pst_mean=post_mean, pst_sd=post_sd, left=int_left, right=int_right)
 }
 result <- result[-c(1), ]
-```
 
-### 4.1
-```{r}
 as.data.frame(result[1, c(1,2,3)])
+
 ```
 ### 4.2
 ```{r}
