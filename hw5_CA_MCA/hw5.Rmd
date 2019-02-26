@@ -1,0 +1,68 @@
+---
+title: "hw5"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### 5.1
+```{r}
+library(tidyverse)
+library(ca)
+
+
+chair <- read.csv('https://raw.githubusercontent.com/agricolamz/2019_data_analysis_for_linguists/master/data/students/acRnR/hw5_CA_MCA/hw5_chairs.csv')
+chair$Shop <- NULL
+chair$WordDE <- NULL
+
+
+MCA <- MASS::mca(chair[,-1])
+
+chair <- cbind(chair, MCA$rs)
+variables <- as_data_frame(MCA$cs)
+variables$var_names <- rownames(MCA$cs)
+chair %>% 
+  ggplot(aes(`1`, `2`))+
+  geom_point(aes(color = Category))+
+  stat_ellipse(aes(color = Category))+
+  geom_text(data = variables, aes(`1`, `2`, label = var_names), size=2)+
+  theme_bw()+
+  scale_x_continuous(limits = c(-0.015, 0.02))
+```
+
+### 5.2
+```{r}
+'Stuhl и Sessel в немецком языке хорошо различаются с помощью факторов Function, SeatDepth, Back, Recline, ReclineBack, MaterialSeat. То есть следующие признаки: предназначение - работа, глубина сидения - регулируемая, высота спинки - регулируемая, материал сидения - сталь/дерево/пластик - характерны скорее для Stuhl. В то же время признаки: предназначение - отдых, глубина сидения - глубокое, возможность откидывания/трансформации как всего предмета, так и отдельно спинки, материал сидения - ткань/кожа - характерны скорее для Sessel'
+
+```
+
+### 5.3
+```{r}
+clr <- read.csv('https://raw.githubusercontent.com/agricolamz/2019_data_analysis_for_linguists/master/data/students/acRnR/hw5_CA_MCA/hw5_colreg.csv')
+
+library(GGally)
+
+rownames(clr) <- clr$colors
+ca <- ca(clr[-5])
+
+clr_col <- data.frame(ca$colcoord)
+clr_col$rows <- rownames(ca$colcoord)
+
+clr_row <- data.frame(ca$rowcoord)
+clr_row$rows <- rownames(ca$rowcoord)
+
+clr_col %>% 
+  ggplot(aes(Dim1, Dim2, label = rows))+
+  geom_text(color = "blue")+
+  geom_text(data = clr_row, color = "red")+
+  theme_bw()+
+  labs(x = "Dim1",
+       y = "Dim2")
+```
+
+### 5.4
+```{r}
+'В академическом языке редко употребляются цветообозначения. В разговорном языке часто употребляются black и white, возможно, из-за употребления этих слов в значении цвета кожи. В языке прессы часто употребляются green, orange и red. Green, возможно, встречается часто благодаря его употреблению в значении "экологичный" и устойчивых выражениях (green light), red из-за устойчивыхх выражений со значением опасности/запрета (red flags, red light) а так же широком употреблении этого цвета в символах, логотипах, флагах и даже названиях команд и компаний (Red Cross, Red Bull, Red Sox), объяснение частотности в языке прессы слова orange найти сложно. В языке художественной литературы частотны слова yellow, blue, pink, purple, brown, gray. Скорее всего употребление этих цветов объясняется именно выполнением задачи описания среды и предметов в произведении'
+```
